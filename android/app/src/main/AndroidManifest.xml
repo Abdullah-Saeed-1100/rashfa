@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--   السماح للتطبيق بالوصول إلى الإنترنت   -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="rashfa"
         android:name="${applicationName}"
