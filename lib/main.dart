@@ -8,6 +8,8 @@ import 'core/repos/juice_repo.dart';
 import 'core/services/get_it_service.dart';
 import 'core/services/simple_bloc_observer.dart';
 import 'core/utils/app_keys.dart';
+import 'features/add_juice/logic/cubit/add_juices_cubit.dart';
+import 'features/details_juice/logic/cubit/delete_juice_cubit.dart';
 import 'features/home/ui/home_screen.dart';
 
 Future<void> main() async {
@@ -37,11 +39,23 @@ class RashfaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              FetchAllJuicesCubit(juiceRepo: getIt.get<JuiceRepo>())
-                ..fetchAllJuices(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (context) =>
+                  FetchAllJuicesCubit(juiceRepo: getIt.get<JuiceRepo>())
+                    ..fetchAllJuices(),
+        ),
+        BlocProvider(
+          create:
+              (context) => AddJuicesCubit(juiceRepo: getIt.get<JuiceRepo>()),
+        ),
+        BlocProvider(
+          create:
+              (context) => DeleteJuiceCubit(juiceRepo: getIt.get<JuiceRepo>()),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

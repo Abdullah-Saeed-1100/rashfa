@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/juice_model.dart';
+import '../../home/logic/cubit/fetch_all_juices_cubit.dart';
+import '../logic/cubit/delete_juice_cubit.dart';
 
 class DetailsJuiceScreen extends StatelessWidget {
   final JuiceModel juiceModel;
@@ -25,8 +27,29 @@ class DetailsJuiceScreen extends StatelessWidget {
         backgroundColor: Colors.black.withOpacity(0.2),
         automaticallyImplyLeading: false,
         leading: InkWell(
-          onTap: () async {},
-          child: Icon(Icons.delete_outline_rounded, color: Colors.orange),
+          onTap: () async {
+            context.read<DeleteJuiceCubit>().deleteJuice(id: juiceModel.id!);
+          },
+          child: BlocConsumer<DeleteJuiceCubit, DeleteJuiceState>(
+            listener:
+                (context, state) => {
+                  if (state is DeleteJuiceSuccess)
+                    {
+                      context.read<FetchAllJuicesCubit>().fetchAllJuices(),
+                      Navigator.pop(context),
+                    },
+                },
+            builder: (context, state) {
+              return state is DeleteJuiceLoading
+                  ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: const CircularProgressIndicator(
+                      color: Colors.orange,
+                    ),
+                  )
+                  : Icon(Icons.delete_outline_rounded, color: Colors.orange);
+            },
+          ),
         ),
         // ================  Button Edit  ==============
         actions: [
