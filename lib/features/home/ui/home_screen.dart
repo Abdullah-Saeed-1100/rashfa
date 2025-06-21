@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/repos/juice_repo.dart';
+import '../../../core/services/get_it_service.dart';
 import '../../../core/widgets/item_card.dart';
+import '../../add_juice/logic/cubit/add_juices_cubit.dart';
 import '../../add_juice/ui/add_juice_screen.dart';
 import '../logic/cubit/fetch_all_juices_cubit.dart';
 
@@ -20,7 +23,15 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddJuiceScreen()),
+            MaterialPageRoute(
+              builder:
+                  (context) => BlocProvider(
+                    create:
+                        (context) =>
+                            AddJuicesCubit(juiceRepo: getIt.get<JuiceRepo>()),
+                    child: const AddJuiceScreen(),
+                  ),
+            ),
           );
         },
       ),

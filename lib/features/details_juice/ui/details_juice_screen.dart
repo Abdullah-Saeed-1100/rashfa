@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/juice_model.dart';
+import '../../../core/repos/juice_repo.dart';
+import '../../../core/services/get_it_service.dart';
 import '../../home/logic/cubit/fetch_all_juices_cubit.dart';
+import '../../update_juice/ui/update_juice_screen.dart';
 import '../logic/delete_juice_cubit/delete_juice_cubit.dart';
+import '../logic/update_juice_cubit/update_juice_cubit.dart';
 
 class DetailsJuiceScreen extends StatelessWidget {
   final JuiceModel juiceModel;
@@ -58,13 +62,19 @@ class DetailsJuiceScreen extends StatelessWidget {
             child: InkWell(
               child: const Icon(Icons.edit, size: 35, color: Colors.orange),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder:
-                //         (context) => EditItem(juiceModel: widget.juiceModel),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => BlocProvider(
+                          create:
+                              (context) => UpdateJuiceCubit(
+                                juiceRepo: getIt.get<JuiceRepo>(),
+                              ),
+                          child: UpdateJuiceScreen(juiceModel: juiceModel),
+                        ),
+                  ),
+                );
               },
             ),
           ),
@@ -82,6 +92,17 @@ class DetailsJuiceScreen extends StatelessWidget {
               fit: BoxFit.fill,
               // width: MediaQuery.of(context).size.width / 1.3,
               // height: MediaQuery.of(context).size.height * 0.5,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.orange),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return const Center(
+                  child: Icon(Icons.error, color: Colors.orange),
+                );
+              },
             ),
           ),
           // =============================================

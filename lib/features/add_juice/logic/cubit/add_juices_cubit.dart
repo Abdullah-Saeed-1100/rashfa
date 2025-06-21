@@ -37,4 +37,11 @@ class AddJuicesCubit extends Cubit<AddJuicesState> {
       }
     }
   }
+
+  @override
+  Future<void> close() {
+    nameController.dispose();
+    priceController.dispose();
+    return super.close();
+  }
 }

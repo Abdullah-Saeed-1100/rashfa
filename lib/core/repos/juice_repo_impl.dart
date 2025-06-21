@@ -63,6 +63,16 @@ class JuiceRepoImpl implements JuiceRepo {
     required JuiceModel juiceModel,
   }) async {
     try {
+      // upload the image
+      if (juiceModel.image != null) {
+        final imageUrl = await supabaseStorageService.uploadFile(
+          file: juiceModel.image!,
+          path: "juices_images/",
+          bucket: "bagar",
+        );
+        juiceModel.imageUrl = imageUrl; // add the image url to the juice model
+      }
+
       await supabaseDatabaseService.updateRow(
         table: 'juices',
         id: juiceModel.id!,
