@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/details_juice/ui/details_juice_screen.dart';
 import '../models/juice_model.dart';
 
 class ItemCard extends StatelessWidget {
@@ -31,12 +32,13 @@ class ItemCard extends StatelessWidget {
           // ================  image ===============
           InkWell(
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => ItemInfo(juiceModel: juiceModel),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => DetailsJuiceScreen(juiceModel: juiceModel),
+                ),
+              );
             },
             child: Center(
               child: Image.network(
