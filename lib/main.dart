@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rashfa/features/home/logic/cubit/fetch_all_juices_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/repos/juice_repo.dart';
 import 'core/services/get_it_service.dart';
+import 'core/services/simple_bloc_observer.dart';
 import 'core/utils/app_keys.dart';
 import 'features/home/ui/home_screen.dart';
 
@@ -17,6 +21,9 @@ Future<void> main() async {
   // Setup service locator
   ServiceLocator.setup();
 
+  // Set up Bloc observer
+  Bloc.observer = SimpleBlocObserver();
+
   //
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
@@ -30,13 +37,19 @@ class RashfaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF212325),
-        fontFamily: "Marhey",
+    return BlocProvider(
+      create:
+          (context) =>
+              FetchAllJuicesCubit(juiceRepo: getIt.get<JuiceRepo>())
+                ..fetchAllJuices(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xFF212325),
+          fontFamily: "Marhey",
+        ),
+        home: const HomeScreen(),
       ),
-      home: const HomeScreen(),
     );
   }
 }

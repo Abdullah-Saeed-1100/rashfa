@@ -1,10 +1,13 @@
+import 'dart:io';
+
 class JuiceModel {
   final int? id;
   final DateTime? createdAt;
   final String name;
   final String description;
   final int price;
-  final String imageUrl;
+  String? imageUrl;
+  final File? image;
 
   JuiceModel({
     this.id,
@@ -12,7 +15,8 @@ class JuiceModel {
     required this.name,
     required this.description,
     required this.price,
-    required this.imageUrl,
+    this.imageUrl,
+    this.image,
   });
 
   factory JuiceModel.fromJson(Map<String, dynamic> json) {

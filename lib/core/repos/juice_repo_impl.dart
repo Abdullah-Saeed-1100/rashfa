@@ -3,16 +3,31 @@ import 'package:rashfa/core/errors/failures.dart';
 import 'package:rashfa/core/models/juice_model.dart';
 import 'package:rashfa/core/repos/juice_repo.dart';
 import '../services/supabase_database_service.dart';
+import '../services/supabase_storage_service.dart';
 
 class JuiceRepoImpl implements JuiceRepo {
   final SupabaseDatabaseService supabaseDatabaseService;
-  JuiceRepoImpl({required this.supabaseDatabaseService});
+  final SupabaseStorageService supabaseStorageService;
+  JuiceRepoImpl({
+    required this.supabaseDatabaseService,
+    required this.supabaseStorageService,
+  });
 
   @override
   Future<Either<Failure, String>> addJuice({
     required JuiceModel juiceModel,
   }) async {
     try {
+      // upload the image
+      final imageUrl = await supabaseStorageService.uploadFile(
+        file: juiceModel.image!,
+        path: "juices_images/",
+        bucket: "bagar",
+      );
+
+      juiceModel.imageUrl = imageUrl; // add the image url to the juice model
+
+      // insert the juice
       await supabaseDatabaseService.insertRow(
         table: 'juices',
         values: juiceModel.toJson(),
