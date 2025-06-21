@@ -9,7 +9,7 @@ import 'core/services/get_it_service.dart';
 import 'core/services/simple_bloc_observer.dart';
 import 'core/utils/app_keys.dart';
 import 'features/add_juice/logic/cubit/add_juices_cubit.dart';
-import 'features/details_juice/logic/cubit/delete_juice_cubit.dart';
+import 'features/details_juice/logic/delete_juice_cubit/delete_juice_cubit.dart';
 import 'features/home/ui/home_screen.dart';
 
 Future<void> main() async {

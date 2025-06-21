@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/juice_model.dart';
 import '../../home/logic/cubit/fetch_all_juices_cubit.dart';
-import '../logic/cubit/delete_juice_cubit.dart';
+import '../logic/delete_juice_cubit/delete_juice_cubit.dart';
 
 class DetailsJuiceScreen extends StatelessWidget {
   final JuiceModel juiceModel;
