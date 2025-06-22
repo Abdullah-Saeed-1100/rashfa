@@ -42,13 +42,34 @@ class ItemCard extends StatelessWidget {
             // ================  image ===============
             Center(
               child: Image.network(
-                // juiceModel.imageUrl,
-                "https://res.cloudinary.com/dm9jjz6qz/image/upload/v1750492056/Espresso_jgwt1g.png",
+                juiceModel.imageUrl!,
+                // "https://res.cloudinary.com/dm9jjz6qz/image/upload/v1750492056/Espresso_jgwt1g.png",
+                fit: BoxFit.fill,
+                // width: MediaQuery.of(context).size.width / 1.3,
+                // height: MediaQuery.of(context).size.height * 0.5,
                 // مايحتاج عرض تشل العرض حقها لأننا عطيناها contain
                 // width: 120,
                 alignment: AlignmentDirectional.center,
                 height: 130,
-                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return SizedBox(
+                    height: 130,
+
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.orange),
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return SizedBox(
+                    height: 130,
+
+                    child: Center(
+                      child: Icon(Icons.error, color: Colors.orange),
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(height: 10),
