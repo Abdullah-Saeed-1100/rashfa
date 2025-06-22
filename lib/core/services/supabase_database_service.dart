@@ -9,7 +9,10 @@ class SupabaseDatabaseService {
   /// جلب جميع الصفوف من جدول معين
   Future<List<Map<String, dynamic>>> fetchAll(String table) async {
     try {
-      final response = await _client.from(table).select();
+      final response = await _client
+          .from(table)
+          .select()
+          .order('id', ascending: false);
       return (response as List).cast<Map<String, dynamic>>();
     } on PostgrestException catch (e) {
       debugPrint('[Supabase ERROR] ${e.message}');
