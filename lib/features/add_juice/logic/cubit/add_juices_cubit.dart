@@ -18,13 +18,19 @@ class AddJuicesCubit extends Cubit<AddJuicesState> {
 
   Future<void> addJuice() async {
     if (formstate.currentState!.validate()) {
+      final priceText = priceController.text.trim();
+      final price = int.tryParse(priceText);
+      if (price == null) {
+        emit(AddJuicesError(errMessage: "الرجاء إدخال سعر صالح"));
+        return;
+      }
       if (image != null) {
         emit(AddJuicesLoading());
         final result = await juiceRepo.addJuice(
           juiceModel: JuiceModel(
-            name: nameController.text,
+            name: nameController.text.trim(),
             description: "مشروب على كيف كيفك يخليك فوق النخل",
-            price: int.parse(priceController.text),
+            price: price,
             image: image!,
           ),
         );
